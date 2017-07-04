@@ -1310,11 +1310,12 @@ public class StorageProxy implements StorageProxyMBean
     throws UnavailableException, ReadFailureException, ReadTimeoutException
     {
         long start = System.nanoTime();
+
         List<Row> rows = null;
 
         try
         {
-            if(DatabaseDescriptor.getReinEnabled())
+            if(DatabaseDescriptor.getReinEnabled() && !commands.get(0).ksName.equals("system"))
                 rows = fetchRowsUsingRein(commands, consistencyLevel);
             else
                 rows = fetchRows(commands, consistencyLevel);
